@@ -7,16 +7,14 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels // Changed from viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.finalproject.Apartament
 import com.example.finalproject.viewmodel.DataBaseViewModel
 
 class DataBase : Fragment() {
 
-    private val viewModel: DataBaseViewModel by viewModels()
-
+    private val viewModel: DataBaseViewModel by activityViewModels()
     private lateinit var listAdapter: ApartamentList
 
     override fun onCreateView(
@@ -30,22 +28,15 @@ class DataBase : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val listView = view.findViewById<RecyclerView>(R.id.AppsList)
-        listAdapter = ApartamentList(emptyList()) { apartment ->
-            Toast.makeText(requireContext(), "Нажата квартира №$" +
-                    "{apartment.ApartamentNumb}", Toast.LENGTH_SHORT).show()
+        listAdapter = ApartamentList { apartment ->
+            Toast.makeText(requireContext(), "Нажата квартира №${apartment.ApartamentNumb}", Toast.LENGTH_SHORT).show()
         }
 
         listView.adapter = listAdapter
         listView.layoutManager = LinearLayoutManager(requireContext())
+
         viewModel.apartments.observe(viewLifecycleOwner) { apartments ->
             listAdapter.submitList(apartments)
-        }
-
-
-        val button: Button = view.findViewById(R.id.AddBut)
-        button.setOnClickListener {
-            val newApartment = Apartament(2, 2, 3.1, 0, false)
-            viewModel.addApartment(newApartment)
         }
     }
 }
