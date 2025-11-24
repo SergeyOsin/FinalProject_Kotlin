@@ -23,9 +23,9 @@ class ApartamentList(private val apps: MutableList<Apartament>,
     class ViewHolder(view: View, private val onClick: (Apartament)->Unit):
         RecyclerView.ViewHolder(view){
         val Numb: TextView = view.findViewById(R.id.NumbApps)
-        val Area: TextView=view.findViewById(R.id.Area)
+        val Area: TextView=view.findViewById(R.id.Rent)
         val countRooms: TextView=view.findViewById(R.id.Rooms)
-        val coint: TextView=view.findViewById(R.id.Status)
+        val coint: TextView=view.findViewById(R.id.Coint)
         val Status: TextView=view.findViewById(R.id.Status)
 
         private lateinit var apartament: Apartament
@@ -44,24 +44,22 @@ class ApartamentList(private val apps: MutableList<Apartament>,
             countRooms.text=apartament.CntRooms.toString()
         }
     }
-
-    private val innerDataBase: MutableList<Apartament> = mutableListOf()
-
+    
     fun printall(): MutableList<Apartament> {
-        return innerDataBase;
+        return apps;
     }
     fun add(appart: Apartament): Boolean{
-        if (innerDataBase.find {it.ApartamentNumb == appart.ApartamentNumb} == null){
-            innerDataBase.add(appart)
+        if (apps.find {it.ApartamentNumb == appart.ApartamentNumb} == null){
+            apps.add(appart)
             return true
         }
         return false
     }
 
     fun delete(numb: Int): Boolean{
-        var apart: Apartament? = innerDataBase.find {it.ApartamentNumb == numb}
+        var apart: Apartament? = apps.find {it.ApartamentNumb == numb}
         if (apart != null){
-            innerDataBase.remove(apart)
+            apps.remove(apart)
             return true
         }
         return false
@@ -72,23 +70,23 @@ class ApartamentList(private val apps: MutableList<Apartament>,
         var(crit, typeCrit) = typeAndProperty
         when(typeCrit){
             PropertyCriteria.RENT ->
-                return innerDataBase.filter{
+                return apps.filter{
                     it.Rent.toString().startsWith(crit)
                 }
             PropertyCriteria.NUMB->
-                return innerDataBase.filter{
+                return apps.filter{
                     it.ApartamentNumb.toString().startsWith(crit)
                 }
             PropertyCriteria.AREA ->
-                return innerDataBase.filter {
+                return apps.filter {
                     it.Area.toString().startsWith(crit)
                 }
             PropertyCriteria.CNTROOMS->
-                return  innerDataBase.filter {
+                return  apps.filter {
                     it.CntRooms.toString().startsWith(crit)
                 }
             PropertyCriteria.ISRENTED ->
-                return innerDataBase.filter {
+                return apps.filter {
                     it.IsRented.toString().startsWith(crit)
                 }
             else -> return null
@@ -101,19 +99,19 @@ class ApartamentList(private val apps: MutableList<Apartament>,
         when (sortCrit) {
             SortCriteria.STRAIGHT ->
                 when (propCrit) {
-                    PropertyCriteria.AREA -> innerDataBase.sortBy { it.Area }
-                    PropertyCriteria.NUMB -> innerDataBase.sortBy { it.ApartamentNumb }
-                    PropertyCriteria.RENT -> innerDataBase.sortBy { it.Rent }
-                    PropertyCriteria.CNTROOMS -> innerDataBase.sortBy { it.CntRooms }
+                    PropertyCriteria.AREA -> apps.sortBy { it.Area }
+                    PropertyCriteria.NUMB -> apps.sortBy { it.ApartamentNumb }
+                    PropertyCriteria.RENT -> apps.sortBy { it.Rent }
+                    PropertyCriteria.CNTROOMS -> apps.sortBy { it.CntRooms }
                     else-> return
                 }
 
             SortCriteria.REVERSE ->
                 when (propCrit) {
-                    PropertyCriteria.AREA -> innerDataBase.sortByDescending { it.Area }
-                    PropertyCriteria.NUMB -> innerDataBase.sortByDescending { it.ApartamentNumb }
-                    PropertyCriteria.RENT -> innerDataBase.sortByDescending { it.Rent }
-                    PropertyCriteria.CNTROOMS -> innerDataBase.sortByDescending { it.CntRooms }
+                    PropertyCriteria.AREA -> apps.sortByDescending { it.Area }
+                    PropertyCriteria.NUMB -> apps.sortByDescending { it.ApartamentNumb }
+                    PropertyCriteria.RENT -> apps.sortByDescending { it.Rent }
+                    PropertyCriteria.CNTROOMS -> apps.sortByDescending { it.CntRooms }
                     else -> return
                 }
         }
@@ -121,7 +119,7 @@ class ApartamentList(private val apps: MutableList<Apartament>,
     }
 
     fun search(numb: Int): Apartament? {
-        return innerDataBase.find{it.ApartamentNumb == numb}
+        return apps.find{it.ApartamentNumb == numb}
     }
 
     infix fun select(apartNumb: Int): Apartament? {

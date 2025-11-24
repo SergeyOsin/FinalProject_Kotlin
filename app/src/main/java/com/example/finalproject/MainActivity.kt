@@ -13,18 +13,16 @@ import androidx.recyclerview.widget.RecyclerView
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
         val listView=findViewById<RecyclerView>(R.id.AppsList)
 
-        Apartament(300,4,3.5,1,false)
         val list=mutableListOf<Apartament>()
         val listAdapter= ApartamentList(list){
             Toast.makeText(this,"Нажата квартира ${it.Rent}",Toast.LENGTH_SHORT).show()
         }
-        listAdapter.add(Apartament(300,4,3.5,1,false))
-        listAdapter.add(Apartament(450,2,10.5,3,true))
-
+        listAdapter.add(Apartament(1,3,3.5,1,true))
         listView.adapter=listAdapter
         listView.layoutManager= LinearLayoutManager(this)
 

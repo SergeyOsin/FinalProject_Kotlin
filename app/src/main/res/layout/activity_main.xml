@@ -10,11 +10,14 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/AppsList"
-        android:layout_width="373dp"
-        android:layout_height="708dp"
+        android:layout_width="408dp"
+        android:layout_height="592dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.191"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/apps_item_layout"
+        tools:itemCount="6"/>
 
     <Button
         android:id="@+id/AddBut"
