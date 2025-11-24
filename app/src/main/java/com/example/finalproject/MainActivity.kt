@@ -1,38 +1,21 @@
 package com.example.finalproject
 
+
 import android.os.Bundle
-import android.widget.Button
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.navigation.findNavController
+import androidx.navigation.ui.setupWithNavController
+import com.example.finalproject.R
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
-
-        val listView=findViewById<RecyclerView>(R.id.AppsList)
-
-        val list=mutableListOf<Apartament>()
-        val listAdapter= ApartamentList(list){
-            Toast.makeText(this,"Нажата квартира №${it.ApartamentNumb}",Toast.LENGTH_SHORT).show()
-        }
-        listAdapter.add(Apartament(1000,3,10.5,3,true))
-        listAdapter.add(Apartament(3500, 4, 12.0,4,false))
-        listAdapter.add(Apartament(10000,1,9.5,2,false))
-        listView.adapter=listAdapter
-        listView.layoutManager= LinearLayoutManager(this)
-
-        val button: Button =findViewById(R.id.AddBut)
-        button.setOnClickListener {
-            listAdapter.add(Apartament(2,2,3.1,0,false))
-            listAdapter.notifyItemInserted(listAdapter.itemCount-1)
-        }
-
+        val butnav=findViewById<BottomNavigationView>(R.id.butnav1)
+        val controller=findNavController(R.id.fragmentContainerView)
+        butnav.setupWithNavController(controller)
     }
 }
