@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">FinalProject</string>
+    <string name="NumbApps">Номер квартиры: </string>
+    <string name="Area">Площадь: </string>
+    <string name="Rooms">Комнат: </string>
+    <string name="Coint">Аренда: </string>
+    <string name="Rented">Статус: </string>
+    <string name="AddBut">Добавить</string>
 </resources>

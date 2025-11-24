@@ -1,5 +1,10 @@
 package com.example.finalproject
 
+import android.R.attr.onClick
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 enum class PropertyCriteria {
@@ -10,12 +15,35 @@ enum class SortCriteria {
     STRAIGHT, REVERSE
 }
 
-fun apartments(block: ApartamentList.() -> Unit): Unit {
-    return ApartamentList().block()
-}
 
 
-class ApartamentList(){
+class ApartamentList(private val apps: MutableList<Apartament>,
+    private val onClick: (Apartament)->Unit): RecyclerView.Adapter
+<ApartamentList.ViewHolder>(){
+    class ViewHolder(view: View, private val onClick: (Apartament)->Unit):
+        RecyclerView.ViewHolder(view){
+        val Numb: TextView = view.findViewById(R.id.NumbApps)
+        val Area: TextView=view.findViewById(R.id.Area)
+        val countRooms: TextView=view.findViewById(R.id.Rooms)
+        val coint: TextView=view.findViewById(R.id.Status)
+        val Status: TextView=view.findViewById(R.id.Status)
+
+        private lateinit var apartament: Apartament
+
+        init{
+            view.setOnClickListener {
+                onClick(apartament)
+            }
+        }
+        fun bind(apartament: Apartament){
+            this.apartament=apartament
+            Numb.text=apartament.ApartamentNumb.toString()
+            Status.text=apartament.IsRented.toString()
+            Area.text=apartament.Area.toString()
+            coint.text=apartament.Rent.toString()
+            countRooms.text=apartament.CntRooms.toString()
+        }
+    }
 
     private val innerDataBase: MutableList<Apartament> = mutableListOf()
 
@@ -23,7 +51,7 @@ class ApartamentList(){
         return innerDataBase;
     }
     fun add(appart: Apartament): Boolean{
-        if (innerDataBase.find {it.adress.ApartmentNumb == appart.adress.ApartmentNumb} == null){
+        if (innerDataBase.find {it.ApartamentNumb == appart.ApartamentNumb} == null){
             innerDataBase.add(appart)
             return true
         }
@@ -31,7 +59,7 @@ class ApartamentList(){
     }
 
     fun delete(numb: Int): Boolean{
-        var apart: Apartament? = innerDataBase.find {it.adress.ApartmentNumb == numb}
+        var apart: Apartament? = innerDataBase.find {it.ApartamentNumb == numb}
         if (apart != null){
             innerDataBase.remove(apart)
             return true
@@ -39,9 +67,6 @@ class ApartamentList(){
         return false
     }
 
-    fun by(crit: String, typeCrit: PropertyCriteria) = Pair <String, PropertyCriteria>(crit, typeCrit)
-
-    fun by(sortCrit: SortCriteria, propCrit: PropertyCriteria) = Pair<SortCriteria, PropertyCriteria>(sortCrit, propCrit)
 
     infix fun filter(typeAndProperty: Pair <String, PropertyCriteria>): List<Apartament>?{
         var(crit, typeCrit) = typeAndProperty
@@ -52,7 +77,7 @@ class ApartamentList(){
                 }
             PropertyCriteria.NUMB->
                 return innerDataBase.filter{
-                    it.adress.ApartmentNumb.toString().startsWith(crit)
+                    it.ApartamentNumb.toString().startsWith(crit)
                 }
             PropertyCriteria.AREA ->
                 return innerDataBase.filter {
@@ -77,7 +102,7 @@ class ApartamentList(){
             SortCriteria.STRAIGHT ->
                 when (propCrit) {
                     PropertyCriteria.AREA -> innerDataBase.sortBy { it.Area }
-                    PropertyCriteria.NUMB -> innerDataBase.sortBy { it.adress.ApartmentNumb }
+                    PropertyCriteria.NUMB -> innerDataBase.sortBy { it.ApartamentNumb }
                     PropertyCriteria.RENT -> innerDataBase.sortBy { it.Rent }
                     PropertyCriteria.CNTROOMS -> innerDataBase.sortBy { it.CntRooms }
                     else-> return
@@ -86,7 +111,7 @@ class ApartamentList(){
             SortCriteria.REVERSE ->
                 when (propCrit) {
                     PropertyCriteria.AREA -> innerDataBase.sortByDescending { it.Area }
-                    PropertyCriteria.NUMB -> innerDataBase.sortByDescending { it.adress.ApartmentNumb }
+                    PropertyCriteria.NUMB -> innerDataBase.sortByDescending { it.ApartamentNumb }
                     PropertyCriteria.RENT -> innerDataBase.sortByDescending { it.Rent }
                     PropertyCriteria.CNTROOMS -> innerDataBase.sortByDescending { it.CntRooms }
                     else -> return
@@ -96,11 +121,24 @@ class ApartamentList(){
     }
 
     fun search(numb: Int): Apartament? {
-        return innerDataBase.find{it.adress.ApartmentNumb == numb}
+        return innerDataBase.find{it.ApartamentNumb == numb}
     }
 
     infix fun select(apartNumb: Int): Apartament? {
         return this.search(apartNumb)
     }
+
+    override fun onCreateViewHolder( parent: ViewGroup, viewType: Int): ViewHolder {
+        val view= LayoutInflater.from(parent.context).inflate(
+            R.layout.apps_item_layout,parent,false
+        )
+        return ViewHolder(view,onClick)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int ) {
+        holder.bind(apps[position])
+    }
+
+    override fun getItemCount()=apps.size
 
 }
