@@ -15,17 +15,15 @@ enum class SortCriteria {
     STRAIGHT, REVERSE
 }
 
-
-
 class ApartamentList(private val apps: MutableList<Apartament>,
     private val onClick: (Apartament)->Unit): RecyclerView.Adapter
 <ApartamentList.ViewHolder>(){
     class ViewHolder(view: View, private val onClick: (Apartament)->Unit):
         RecyclerView.ViewHolder(view){
         val Numb: TextView = view.findViewById(R.id.NumbApps)
-        val Area: TextView=view.findViewById(R.id.Rent)
+        val Area: TextView=view.findViewById(R.id.Area)
         val countRooms: TextView=view.findViewById(R.id.Rooms)
-        val coint: TextView=view.findViewById(R.id.Coint)
+        val coint: TextView=view.findViewById(R.id.Rent)
         val Status: TextView=view.findViewById(R.id.Status)
 
         private lateinit var apartament: Apartament
@@ -38,9 +36,10 @@ class ApartamentList(private val apps: MutableList<Apartament>,
         fun bind(apartament: Apartament){
             this.apartament=apartament
             Numb.text=apartament.ApartamentNumb.toString()
-            Status.text=apartament.IsRented.toString()
-            Area.text=apartament.Area.toString()
-            coint.text=apartament.Rent.toString()
+            if (apartament.IsRented) Status.text="Сдана"
+            else Status.text="Несдана"
+            Area.text=apartament.Area.toString() + " м2"
+            coint.text=apartament.Rent.toString() + " руб"
             countRooms.text=apartament.CntRooms.toString()
         }
     }

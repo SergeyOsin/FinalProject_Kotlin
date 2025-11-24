@@ -20,15 +20,17 @@ class MainActivity : AppCompatActivity() {
 
         val list=mutableListOf<Apartament>()
         val listAdapter= ApartamentList(list){
-            Toast.makeText(this,"Нажата квартира ${it.Rent}",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this,"Нажата квартира №${it.ApartamentNumb}",Toast.LENGTH_SHORT).show()
         }
-        listAdapter.add(Apartament(1,3,3.5,1,true))
+        listAdapter.add(Apartament(1000,3,10.5,3,true))
+        listAdapter.add(Apartament(3500, 4, 12.0,4,false))
+        listAdapter.add(Apartament(10000,1,9.5,2,false))
         listView.adapter=listAdapter
         listView.layoutManager= LinearLayoutManager(this)
 
         val button: Button =findViewById(R.id.AddBut)
         button.setOnClickListener {
-            listAdapter.add(Apartament(0,0,0.1,0,false))
+            listAdapter.add(Apartament(2,2,3.1,0,false))
             listAdapter.notifyItemInserted(listAdapter.itemCount-1)
         }
 
