@@ -8,43 +8,31 @@
     tools:context=".MainActivity">
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/AppsList"
-        android:layout_width="413dp"
-        android:layout_height="420dp"
-        android:layout_marginTop="36dp"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/butnav1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="1dp"
+        android:background="@color/purple"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/menu_btn"/>
+
+    <fragment
+        android:id="@+id/fragmentContainerView"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="409dp"
+        android:layout_height="648dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="1dp"
+        app:defaultNavHost="true"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:itemCount="6"
-        tools:listitem="@layout/apps_item_layout" />
-
-    <Button
-        android:id="@+id/AddBut"
-        android:layout_width="122dp"
-        android:layout_height="49dp"
-        android:layout_marginBottom="80dp"
-        android:text="@string/AddBut"
-        android:textColor="@color/red"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="415dp"
-        android:layout_height="23dp"
-        android:layout_marginBottom="870dp"
-        android:text="@string/head"
-        android:textColor="@color/white"
-        android:background="@color/red"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.055"
-        app:layout_constraintStart_toStartOf="parent" />
-
+        app:navGraph="@navigation/navigation_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
