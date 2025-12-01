@@ -7,9 +7,9 @@
 
     <TextView
         android:id="@+id/NumbApps"
-        android:layout_width="57dp"
-        android:layout_height="17dp"
-        android:layout_marginStart="44dp"
+        android:layout_width="75dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:textAlignment="center"
@@ -40,6 +40,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:text="@string/Rooms"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
