@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FinalProject</string>
+    <string name="app_name">Аренда жилых помещений</string>
     <string name="head">№ квартиры | Площадь | Аренда (месяц) | Комнат | Статус</string>
     <string name="NumbApps">Номер </string>
     <string name="Num">Номер квартиры</string>
@@ -12,5 +12,6 @@
     <string name="AddBut">Добавить</string>
     <string name="DelBut">Удалить</string>
     <string name="ChangeBut">Изменить</string>
+    <string name="FindBut">Найти (по номеру)</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

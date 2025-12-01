@@ -13,7 +13,6 @@ class DataBaseViewModel : ViewModel() {
     init {
         loadApartments()
     }
-
     private fun loadApartments() {
         val apartmentList = mutableListOf(
             Apartament(1000, 3, 10.5, 3, true),
@@ -24,8 +23,8 @@ class DataBaseViewModel : ViewModel() {
     }
 
     fun addApartment(apartment: Apartament) {
-        val currentList = _apartments.value?.toMutableList() ?: mutableListOf()
+        val currentList = apartments.value?.toMutableList() ?: mutableListOf()
         currentList.add(apartment)
-        _apartments.value = currentList
+        _apartments.value=currentList;
     }
 }
