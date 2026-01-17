@@ -21,13 +21,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
+
         database = AppDatabase.getDatabase(this)
         dao = database.apartmentDao()
         viewModelFactory = DataBaseViewModelFactory(dao)
 
         val butnav = findViewById<BottomNavigationView>(R.id.butnav1)
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         val controller = navHostFragment.navController
         butnav.setupWithNavController(controller)
     }

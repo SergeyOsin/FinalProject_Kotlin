@@ -1,20 +1,12 @@
-// DataBaseViewModel.kt
 package com.example.finalproject.viewmodel
 
 import androidx.lifecycle.*
 import com.example.finalproject.Apartament
-import com.example.finalproject.data.AppDatabase
 import com.example.finalproject.data.ApartmentDao
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-
-class DataBaseViewModelFactory(private val dao: ApartmentDao) :
-    ViewModelProvider.Factory {
-
+class DataBaseViewModelFactory(private val dao: ApartmentDao) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(DataBaseViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
@@ -26,37 +18,36 @@ class DataBaseViewModelFactory(private val dao: ApartmentDao) :
 
 class DataBaseViewModel(private val dao: ApartmentDao) : ViewModel() {
 
-    private val _apartments = MutableLiveData<List<Apartament>>()
-    val apartments: LiveData<List<Apartament>> = _apartments
+    val apartments: LiveData<List<Apartament>> = dao.getAll().asLiveData()
 
-    init {
+    fun addApartment(apartment: Apartament) {
         viewModelScope.launch {
-            dao.getAll().collect { list ->
-                _apartments.postValue(list)
-            }
+            dao.insert(apartment)
         }
     }
 
+    // Удаление квартиры по номеру
     suspend fun DeleteApp(number: Int) {
         dao.deleteByNumber(number)
     }
 
-    suspend fun findApp(Numb: Int): Boolean {
-        return dao.findByNumber(Numb) != null
+    // Поиск квартиры (suspend, так как вызывается из lifecycleScope во фрагменте)
+    suspend fun findApp(number: Int): Boolean {
+        return dao.findByNumber(number) != null
     }
 
-    suspend fun findAllApps(Numb: Int): Int {
-        return dao.findCountByNumber(Numb)
-    }
-    suspend fun UpdateApp(apps: Apartament): Boolean {
-        try {
-            dao.update(apps)
-            return true
+    // Обновление данных квартиры
+    suspend fun UpdateApp(apartment: Apartament): Boolean {
+        return try {
+            dao.update(apartment)
+            true
         } catch (e: Exception) {
-            return false
+            false
         }
     }
-    suspend fun addApartment(apartment: Apartament) {
-        dao.insert(apartment)
+
+    // (Дополнительно) Подсчет общего количества квартир
+    suspend fun getCount(number: Int): Int {
+        return dao.findCountByNumber(number)
     }
 }
