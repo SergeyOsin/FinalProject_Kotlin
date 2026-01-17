@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.fragment.findNavController
 import com.example.finalproject.viewmodel.DataBaseViewModel
 import com.google.android.material.switchmaterial.SwitchMaterial
@@ -18,7 +19,8 @@ import kotlinx.coroutines.launch
 
 class AddForm : Fragment() {
 
-    private val viewModel: DataBaseViewModel by activityViewModels()
+    private lateinit var viewModel: DataBaseViewModel
+
     private val addform: AddFormViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -29,6 +31,7 @@ class AddForm : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         super.onViewCreated(view, savedInstanceState)
 
         val numberEditText = view.findViewById<TextInputEditText>(R.id.number_edit_text)
