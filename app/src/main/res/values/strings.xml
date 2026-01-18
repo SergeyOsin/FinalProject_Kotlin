@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Аренда жилых помещений</string>
+    <string name="app_name">Аренда помещений</string>
     <string name="head">№ квартиры | Площадь | Аренда (месяц) | Комнат | Статус</string>
     <string name="NumbApps">Номер </string>
     <string name="Num">Номер квартиры</string>

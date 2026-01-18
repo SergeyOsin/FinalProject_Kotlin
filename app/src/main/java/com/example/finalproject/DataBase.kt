@@ -32,6 +32,7 @@ class DataBase : Fragment() {
 
         val listView = view.findViewById<RecyclerView>(R.id.AppsList)
         listAdapter = ApartamentList { apartment ->
+
             Toast.makeText(
                 requireContext(),
                 "Нажата квартира №${apartment.ApartamentNumb}",

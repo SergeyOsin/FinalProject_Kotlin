@@ -22,7 +22,6 @@ class AddForm : Fragment() {
     private val viewModel: DataBaseViewModel by activityViewModels {
         (activity as MainActivity).viewModelFactory
     }
-
     // Объявляем View как переменные уровня класса для удобного доступа
     private lateinit var numberEditText: TextInputEditText
     private lateinit var areaEditText: TextInputEditText
@@ -123,10 +122,7 @@ class AddForm : Fragment() {
         }
     }
 
-    /**
-     * Собирает данные из полей ввода и проверяет их на ошибки.
-     * Возвращает объект Apartament или null, если данные некорректны.
-     */
+
     private fun gatherInput(): Apartament? {
         val nStr = numberEditText.text.toString()
         val aStr = areaEditText.text.toString()

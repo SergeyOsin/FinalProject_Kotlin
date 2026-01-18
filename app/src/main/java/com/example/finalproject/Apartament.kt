@@ -1,4 +1,3 @@
-// Apartament.kt
 package com.example.finalproject
 
 import androidx.room.Entity

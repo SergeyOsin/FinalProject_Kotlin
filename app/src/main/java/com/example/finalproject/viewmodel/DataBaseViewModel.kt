@@ -26,17 +26,14 @@ class DataBaseViewModel(private val dao: ApartmentDao) : ViewModel() {
         }
     }
 
-    // Удаление квартиры по номеру
     suspend fun DeleteApp(number: Int) {
         dao.deleteByNumber(number)
     }
 
-    // Поиск квартиры (suspend, так как вызывается из lifecycleScope во фрагменте)
     suspend fun findApp(number: Int): Boolean {
         return dao.findByNumber(number) != null
     }
 
-    // Обновление данных квартиры
     suspend fun UpdateApp(apartment: Apartament): Boolean {
         return try {
             dao.update(apartment)
@@ -46,7 +43,6 @@ class DataBaseViewModel(private val dao: ApartmentDao) : ViewModel() {
         }
     }
 
-    // (Дополнительно) Подсчет общего количества квартир
     suspend fun getCount(number: Int): Int {
         return dao.findCountByNumber(number)
     }
