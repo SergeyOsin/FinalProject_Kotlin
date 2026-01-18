@@ -1,6 +1,15 @@
+// Apartament.kt
 package com.example.finalproject
 
-import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-data class Apartament(var ApartamentNumb: Int,  var Area: Double, var Rent: Int,  var CntRooms: Int,
-                      var IsRented: Boolean) {}
+@Entity(tableName = "apartments")
+data class Apartament(
+    @PrimaryKey
+    var ApartamentNumb: Int,
+    var Area: Double,
+    var Rent: Int,
+    var CntRooms: Int,
+    var IsRented: Boolean
+)

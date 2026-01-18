@@ -1,69 +1,53 @@
 package com.example.finalproject.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.finalproject.Apartament
-import kotlinx.coroutines.*
+import com.example.finalproject.data.ApartmentDao
+import kotlinx.coroutines.launch
 
-class DataBaseViewModel : ViewModel() {
 
-    private val _apartments = MutableLiveData<List<Apartament>>()
-    val apartments: LiveData<List<Apartament>> = _apartments
+class DataBaseViewModelFactory(private val dao: ApartmentDao) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(DataBaseViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return DataBaseViewModel(dao) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}
 
-    init {
-        loadApartments()
+class DataBaseViewModel(private val dao: ApartmentDao) : ViewModel() {
+
+    val apartments: LiveData<List<Apartament>> = dao.getAll().asLiveData()
+
+    fun addApartment(apartment: Apartament) {
+        viewModelScope.launch {
+            dao.insert(apartment)
+        }
     }
 
-    private fun loadApartments() {
-        val apartmentList = mutableListOf(
-            Apartament(3, 4.1 ,100, 3, true),
-            Apartament(4, 4.2, 1251, 4, true),
-            Apartament(5, 13.1, 9331, 2, false)
-        )
-        _apartments.value = apartmentList
-    }
-
+    // Удаление квартиры по номеру
     suspend fun DeleteApp(number: Int) {
-        viewModelScope.launch(Dispatchers.Default) {
-            val list = apartments.value?.toMutableList() ?: return@launch
-            list.removeIf { it.ApartamentNumb == number }
-            _apartments.postValue(list)  // postValue для безопасного обновления с другого потока
-        }.join()  // Ждём завершения, чтобы метод был suspend
+        dao.deleteByNumber(number)
     }
 
-    suspend fun findApp(Numb: Int): Boolean {
-        return withContext(Dispatchers.Default) {
-            val list = apartments.value ?: emptyList()
-            list.any { it.ApartamentNumb == Numb }
+    // Поиск квартиры (suspend, так как вызывается из lifecycleScope во фрагменте)
+    suspend fun findApp(number: Int): Boolean {
+        return dao.findByNumber(number) != null
+    }
+
+    // Обновление данных квартиры
+    suspend fun UpdateApp(apartment: Apartament): Boolean {
+        return try {
+            dao.update(apartment)
+            true
+        } catch (e: Exception) {
+            false
         }
     }
 
-    suspend fun findAllApps(Numb: Int): Int {
-        return withContext(Dispatchers.Default) {
-            val list = apartments.value ?: emptyList()
-            list.count { it.ApartamentNumb == Numb }
-        }
-    }
-
-    suspend fun UpdateApp(apps: Apartament): Boolean {
-        return withContext(Dispatchers.Default) {
-            val currentList = apartments.value?.toMutableList() ?: return@withContext false
-            val index = currentList.indexOfFirst { it.ApartamentNumb == apps.ApartamentNumb }
-            if (index != -1) {
-                currentList[index] = apps
-                _apartments.postValue(currentList)
-                true
-            } else false
-        }
-    }
-
-    suspend fun addApartment(apartment: Apartament) {
-        viewModelScope.launch(Dispatchers.Default) {
-            val currentList = apartments.value?.toMutableList() ?: mutableListOf()
-            currentList.add(apartment)
-            _apartments.postValue(currentList)
-        }.join()
+    // (Дополнительно) Подсчет общего количества квартир
+    suspend fun getCount(number: Int): Int {
+        return dao.findCountByNumber(number)
     }
 }
